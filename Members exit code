@@ -1,0 +1,32 @@
+client.on("message", message => {
+  if (message.content.startsWith(prefix + "setby")) {
+    let args = message.mentions.channels.first();
+    if (!args)
+      message.channel.send("** منشن روم . ❌**").then(m => {
+        m.delete(1500);
+      });
+    if (
+      !message.guild.member(message.author.id).hasPermission("MANAGE_CHANNELS")
+    )
+      return message.channel.send("**ليس لديك صلاحيات . ❌**");
+    message.channel.send(
+      `**${args}.  | ☑️ |لقد تم شغيل المغادرة هنا**`
+    ); //By ItzTexo
+    client.on("guildMemberAdd", member => {
+      if (member.user.bot) return;
+      var embed = new Discord.RichEmbed()
+        .setAuthor(member.user.username, member.user.avatarURL)
+        .setThumbnail(member.user.avatarURL)
+        .setTitle(`**الله معاك ✋ **`)
+        .addField("**__شكرا لوقتك__**  ", `${member}`)
+        .setDescription(`**مع السلامه تشرفنا بك ✋** `)
+        .addField("👤   تبقي", `**[ ${member.guild.memberCount} ]**`, true)
+        .setColor("RANDOM")
+        .setFooter(`نتمنى لكم الاستمتاع`);
+
+      var channel = member.guild.channels.find(gg => gg.name === "log"); //// تعديل اساسي
+      if (!channel) return;
+      channel.send({ embed: embed });
+    });
+  }
+});
